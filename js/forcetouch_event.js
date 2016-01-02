@@ -1,10 +1,19 @@
-var bubble = document.getElementById("bubble");
+var bubbles = document.getElementsByClassName("bubble");
 var state = document.getElementById('touchstate');
 var force = document.getElementById('force');
 var touch = null;
-console.log(bubble);
-setupForceClickBehavior(bubble);
 
+[].forEach.call(bubbles, function(entry){
+  setupForceClickBehavior(entry);
+});
+
+function resetBubble(){
+  [].forEach.call(bubbles, function(entry){
+    entry.className = 'bubble';
+  });
+}
+
+/*
 function prepareForForceClick(event)
 {
   // Cancel the system's default behavior
@@ -29,6 +38,7 @@ function forceChanged(event)
   // Perform operations in response to changes in force
   console.log('forceChanged');
 }
+*/
 
 function touchForce(event){
   for (var i=0; i < event.targetTouches.length; i++) {
@@ -53,61 +63,79 @@ function onTouchMove(e) {
 function onTouchEnd(e) {
   e.preventDefault();
   touch = null;
+  if (handle !== undefined){
+    window.clearTimeout(handle);
+  }
 }
 
 function checkForce(e) {
   touch = e.touches[0];
-  setTimeout(refreshForceValue.bind(touch), 10);
+  console.log([e,touch]);
+  var handle = window.setTimeout(refreshForceValue.bind(touch), 10);
 }
 
 function refreshForceValue() {
   var touchEvent = this;
+  var touchElement = this.target;
   var forceValue = 0;
+
   if(touchEvent) {
     forceValue = touchEvent.force || 0;
-    setTimeout(refreshForceValue.bind(touch), 10);
+    handle = window.setTimeout(refreshForceValue.bind(touch), 10);
   }else{
     forceValue = 0;
   }
-
-  renderElement(forceValue);
+  // console.log(touchElement);
+  renderElement(forceValue, touchElement);
 }
 
-function setForceState(force){
+function resetClass(){
+
+}
+
+function setForceState(force, target){
   var level = parseInt(force*5);
-  if (bubble.className !== 'full') {
+
+  if (!target.classList.contains('full')) {
+    target.className = 'bubble';
+
     switch(level){
       case 1:
       case 2:
-        bubble.className = 'light';
+        target.classList.add('light');
         break;
       case 3:
       case 4:
-        bubble.className = 'medium';
+        target.classList.add('medium');
         break;
       case 5:
-        bubble.className = 'full';
+        target.classList.add('full');
         break;
       default:
-        bubble.className = '';
+        target.className = 'bubble';
         break;
     }
+  } else {
+    target.className = 'bubble full';
   }
 }
-function renderElement(forceValue) {
+function renderElement(forceValue, target) {
+  // console.log(target);
   // element.style.webkitTransform = 'translateX(-50%) translateY(-50%) scale(' + (1 + forceValue * 1.5) + ')';
   // background.style.webkitFilter = 'blur(' + forceValue * 30 + 'px)';
-  setForceState(forceValue);
+  setForceState(forceValue, target);
   force.innerHTML = 'Force: ' + forceValue.toString();
 }
 
 function setupForceClickBehavior(el)
 {
   // Attach event listeners in preparation for responding to force clicks
+  /*
   el.addEventListener("webkitmouseforcewillbegin", prepareForForceClick, false);
   el.addEventListener("webkitmouseforcedown", enterForceClick, false);
   el.addEventListener("webkitmouseforceup", endForceClick, false);
   el.addEventListener("webkitmouseforcechanged", forceChanged, false);
+  */
 
   el.addEventListener('touchstart', onTouchStart, false);
   el.addEventListener('touchmove', onTouchMove, false);
