@@ -1,6 +1,9 @@
 # bubblewrap
-A bubble wrap game with 3D Touch Force on iPhone 6s/6s+. [Online demo](https://amouro.github.io/bubblewrap)
+A bubble wrap game with 3D Touch Force on iPhone 6s/6s+.
+
 Developing with only native Javascript.
+
+[Online demo](https://amouro.github.io/bubblewrap)
 
 # TODO
 - Implement force touch event for MBPR and Magic Trackpad2 with force touch
