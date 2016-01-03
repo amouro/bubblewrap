@@ -3,12 +3,11 @@ var state = document.getElementById('touchstate');
 var force = document.getElementById('force');
 var touch = null;
 
-[].forEach.call(bubbles, function(entry){
-  setupForceClickBehavior(entry);
-});
+initBubble();
 
-function resetBubble(){
+function initBubble(){
   [].forEach.call(bubbles, function(entry){
+    setupForceClickBehavior(entry);
     entry.className = 'bubble';
   });
 }
@@ -109,7 +108,7 @@ function setForceState(force, target){
         target.classList.add('medium');
         break;
       case 5:
-        target.classList.add('full');
+        target.classList.add('full');          
         break;
       default:
         target.className = 'bubble';
