@@ -1,5 +1,5 @@
 var bubbles = document.getElementsByClassName("bubble");
-var state = document.getElementById('touchstate');
+// var state = document.getElementById('touchstate');
 var force = document.getElementById('force');
 var touch = null;
 
@@ -12,7 +12,7 @@ function initBubble(){
   });
 }
 
-/*
+
 function prepareForForceClick(event)
 {
   // Cancel the system's default behavior
@@ -23,21 +23,31 @@ function prepareForForceClick(event)
 function enterForceClick(event)
 {
   // Perform operations in response to entering force click
-  console.log('enterForceClick');
+  // console.log('enterForceClick');
+  setForceState(1, event.target);
 }
  
 function endForceClick(event)
 {
   // Perform operations in response to exiting force click
-  console.log('endForceClick');
+  // console.log('endForceClick');
 }
  
 function forceChanged(event)
 {
   // Perform operations in response to changes in force
-  console.log('forceChanged');
+  // console.log('forceChanged');
+  setForceState(0.6, event.target);
 }
-*/
+
+function endClick(event)
+{
+  // Perform operations in response to exiting force click
+  // console.log('endClick');
+  setTimeout(function(){
+    setForceState(0, event.target);
+  }, 200);
+}
 
 function touchForce(event){
   for (var i=0; i < event.targetTouches.length; i++) {
@@ -118,6 +128,7 @@ function setForceState(force, target){
     target.className = 'bubble full';
   }
 }
+
 function renderElement(forceValue, target) {
   // console.log(target);
   // element.style.webkitTransform = 'translateX(-50%) translateY(-50%) scale(' + (1 + forceValue * 1.5) + ')';
@@ -129,12 +140,12 @@ function renderElement(forceValue, target) {
 function setupForceClickBehavior(el)
 {
   // Attach event listeners in preparation for responding to force clicks
-  /*
+  
   el.addEventListener("webkitmouseforcewillbegin", prepareForForceClick, false);
   el.addEventListener("webkitmouseforcedown", enterForceClick, false);
   el.addEventListener("webkitmouseforceup", endForceClick, false);
   el.addEventListener("webkitmouseforcechanged", forceChanged, false);
-  */
+  el.addEventListener("mouseup", endClick, false);
 
   el.addEventListener('touchstart', onTouchStart, false);
   el.addEventListener('touchmove', onTouchMove, false);
